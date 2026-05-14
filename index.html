@@ -342,6 +342,14 @@ section{padding:var(--section-pad) clamp(20px,8vw,160px);position:relative;z-ind
   position:relative;overflow:hidden;
   font-family:'Syne',sans-serif;
 }
+.about-avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border-radius:24px;
+  position:relative;
+  z-index:1;
+}
 .about-avatar::before{
   content:'';
   position:absolute;inset:0;
@@ -431,9 +439,12 @@ section{padding:var(--section-pad) clamp(20px,8vw,160px);position:relative;z-ind
 .skill-card:hover{border-color:var(--accent);transform:translateY(-6px);box-shadow:0 16px 40px rgba(124,110,255,.2)}
 .skill-card:hover::before{opacity:.06}
 .skill-icon{
-  font-size:36px;margin-bottom:10px;
+  width:48px;
+  height:48px;
+  margin:0 auto 12px;
   position:relative;z-index:1;
   display:block;
+  object-fit:contain;
 }
 .skill-name{
   font-size:13px;font-weight:600;
@@ -907,7 +918,7 @@ footer{
   <div class="about-grid">
     <div class="about-avatar-wrap reveal-left">
       <div class="about-avatar">
-        <div class="avatar-initials">ZA</div>
+        <img src="https://media.licdn.com/dms/image/v2/D4D03AQGXkEG2xA_Mqw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1705591178407?e=1780531200&v=beta&t=b9edsCwCFsE1NMZ-tvkfU0BQd8Nzq3vc-TZHL-dB39M" alt="Zeeshan Akhtar profile photo" />
       </div>
       <div class="about-avatar-badge badge-top">🏆 Senior Developer</div>
       <div class="about-avatar-badge badge-bottom">📍 Pakistan</div>
@@ -947,22 +958,24 @@ footer{
     <p class="section-subtitle" style="margin:0 auto">Tools and technologies I use to build world-class mobile applications.</p>
   </div>
   <div class="skills-grid reveal">
-    <div class="skill-card"><span class="skill-icon">💙</span><div class="skill-name">Flutter</div><div class="skill-cat">Mobile</div></div>
-    <div class="skill-card"><span class="skill-icon">🎯</span><div class="skill-name">Dart</div><div class="skill-cat">Language</div></div>
-    <div class="skill-card"><span class="skill-icon">🟢</span><div class="skill-name">Node.js</div><div class="skill-cat">Backend</div></div>
-    <div class="skill-card"><span class="skill-icon">🔥</span><div class="skill-name">Firebase</div><div class="skill-cat">Backend</div></div>
-    <div class="skill-card"><span class="skill-icon">🤖</span><div class="skill-name">Android</div><div class="skill-cat">Platform</div></div>
-    <div class="skill-card"><span class="skill-icon">🍎</span><div class="skill-name">iOS</div><div class="skill-cat">Platform</div></div>
-    <div class="skill-card"><span class="skill-icon">🗄️</span><div class="skill-name">MongoDB</div><div class="skill-cat">Database</div></div>
-    <div class="skill-card"><span class="skill-icon">📦</span><div class="skill-name">BLoC/Riverpod</div><div class="skill-cat">State Mgmt</div></div>
-    <div class="skill-card"><span class="skill-icon">🌐</span><div class="skill-name">REST APIs</div><div class="skill-cat">Integration</div></div>
-    <div class="skill-card"><span class="skill-icon">💳</span><div class="skill-name">Stripe/PayPal</div><div class="skill-cat">Payments</div></div>
-    <div class="skill-card"><span class="skill-icon">🗺️</span><div class="skill-name">Google Maps</div><div class="skill-cat">Maps SDK</div></div>
-    <div class="skill-card"><span class="skill-icon">💬</span><div class="skill-name">WebSockets</div><div class="skill-cat">Real-time</div></div>
-    <div class="skill-card"><span class="skill-icon">🐙</span><div class="skill-name">Git/GitHub</div><div class="skill-cat">DevOps</div></div>
-    <div class="skill-card"><span class="skill-icon">📲</span><div class="skill-name">Push Notifications</div><div class="skill-cat">Engagement</div></div>
-    <div class="skill-card"><span class="skill-icon">🏗️</span><div class="skill-name">MVVM/Clean</div><div class="skill-cat">Architecture</div></div>
-    <div class="skill-card"><span class="skill-icon">🐍</span><div class="skill-name">Python</div><div class="skill-cat">Language</div></div>
+    <div class="skill-card"><img class="skill-icon" src="icons/flutter.png" alt="Flutter logo"/><div class="skill-name">Flutter</div><div class="skill-cat">Mobile</div></div>
+    <div class="skill-card"><img class="skill-icon" src="icons/dart.png" alt="Dart logo"/><div class="skill-name">Dart</div><div class="skill-cat">Language</div></div>
+    <div class="skill-card"><img class="skill-icon" src="icons/nodejs.svg" alt="Node.js logo"/><div class="skill-name">Node.js</div><div class="skill-cat">Backend</div></div>
+    <div class="skill-card"><img class="skill-icon" src="icons/python.png" alt="Python logo"/><div class="skill-name">Python</div><div class="skill-cat">Language</div></div>
+    <div class="skill-card"><img class="skill-icon" src="icons/firebase.png" alt="Firebase logo"/><div class="skill-name">Firebase</div><div class="skill-cat">Platform</div></div>
+    <div class="skill-card"><img class="skill-icon" src="icons/android.svg" alt="Android logo"/><div class="skill-name">Android</div><div class="skill-cat">Platform</div></div>
+    <div class="skill-card"><img class="skill-icon" src="icons/ios.svg" alt="Apple iOS logo"/><div class="skill-name">iOS</div><div class="skill-cat">Platform</div></div>
+    <div class="skill-card"><img class="skill-icon" src="icons/mongodb.png" alt="MongoDB logo"/><div class="skill-name">MongoDB</div><div class="skill-cat">Database</div></div>
+    <div class="skill-card"><img class="skill-icon" src="icons/bloc.png" alt="BLoC logo"/><div class="skill-name">BLoC</div><div class="skill-cat">State Mgmt</div></div>
+    <div class="skill-card"><img class="skill-icon" src="icons/riverpod.png" alt="Riverpod logo"/><div class="skill-name">Riverpod</div><div class="skill-cat">State Mgmt</div></div>
+    <div class="skill-card"><img class="skill-icon" src="icons/clean-architecture.jpg" alt="Clean Architecture logo"/><div class="skill-name">Clean Architecture</div><div class="skill-cat">Architecture</div></div>
+    <div class="skill-card"><img class="skill-icon" src="icons/github.png" alt="GitHub logo"/><div class="skill-name">GitHub</div><div class="skill-cat">Version Control</div></div>
+    <div class="skill-card"><img class="skill-icon" src="icons/stripe.png" alt="Stripe logo"/><div class="skill-name">Stripe</div><div class="skill-cat">Payments</div></div>
+    <div class="skill-card"><img class="skill-icon" src="icons/paypal.jpg" alt="PayPal logo"/><div class="skill-name">PayPal</div><div class="skill-cat">Payments</div></div>
+    <div class="skill-card"><img class="skill-icon" src="icons/google-maps.svg" alt="Google Maps logo"/><div class="skill-name">Google Maps</div><div class="skill-cat">Maps</div></div>
+    <div class="skill-card"><img class="skill-icon" src="icons/rest-api.png" alt="REST API icon"/><div class="skill-name">REST APIs</div><div class="skill-cat">Integration</div></div>
+    <div class="skill-card"><img class="skill-icon" src="icons/websockets.png" alt="WebSockets icon"/><div class="skill-name">WebSockets</div><div class="skill-cat">Real-time</div></div>
+    <div class="skill-card"><img class="skill-icon" src="icons/push-notifications.png" alt="Push Notifications icon"/><div class="skill-name">Push Notifications</div><div class="skill-cat">Engagement</div></div>
   </div>
 </section>
 
