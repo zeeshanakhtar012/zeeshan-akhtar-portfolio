@@ -1,1 +1,1523 @@
-# zeeshan-akhtar-portfolio
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Zeeshan Akhtar — Flutter Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet"/>
+<style>
+/* ===== RESET & BASE ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:#060912;
+  color:#e8eaf6;
+  overflow-x:hidden;
+  line-height:1.6;
+}
+
+/* ===== CSS VARIABLES ===== */
+:root{
+  --accent:#7c6eff;
+  --accent2:#00d4aa;
+  --accent3:#ff6b6b;
+  --glow:rgba(124,110,255,.25);
+  --glass:rgba(255,255,255,.04);
+  --glass-border:rgba(255,255,255,.08);
+  --text-primary:#e8eaf6;
+  --text-secondary:#9ba3c7;
+  --text-muted:#5a6280;
+  --bg-deep:#060912;
+  --bg-card:#0d1021;
+  --bg-card2:#111428;
+  --section-pad:clamp(60px,8vw,120px);
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:#060912}
+::-webkit-scrollbar-thumb{background:var(--accent);border-radius:2px}
+
+/* ===== SCROLL PROGRESS ===== */
+#scroll-progress{
+  position:fixed;top:0;left:0;height:2px;width:0%;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  z-index:1000;transition:width .1s linear;
+}
+
+/* ===== NOISE TEXTURE OVERLAY ===== */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;opacity:.4;
+}
+
+/* ===== LOADER ===== */
+#loader{
+  position:fixed;inset:0;
+  background:#060912;
+  display:flex;align-items:center;justify-content:center;
+  z-index:9999;
+  flex-direction:column;gap:24px;
+  transition:opacity .6s ease,visibility .6s ease;
+}
+#loader.hidden{opacity:0;visibility:hidden}
+.loader-logo{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(28px,5vw,48px);
+  font-weight:800;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  letter-spacing:-1px;
+  animation:pulse 1.5s ease infinite;
+}
+.loader-bar{
+  width:200px;height:2px;
+  background:rgba(255,255,255,.08);
+  border-radius:1px;overflow:hidden;
+}
+.loader-fill{
+  height:100%;width:0%;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  border-radius:1px;
+  animation:load 1.8s ease forwards;
+}
+@keyframes load{0%{width:0%}70%{width:80%}100%{width:100%}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+
+/* ===== NAVIGATION ===== */
+nav{
+  position:fixed;top:0;left:0;right:0;
+  z-index:100;
+  padding:0 clamp(20px,5vw,80px);
+  height:72px;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:all .4s ease;
+}
+nav.scrolled{
+  background:rgba(6,9,18,.85);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--glass-border);
+}
+.nav-logo{
+  font-family:'Syne',sans-serif;
+  font-weight:800;font-size:22px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  text-decoration:none;
+}
+.nav-links{
+  display:flex;align-items:center;gap:32px;
+  list-style:none;
+}
+.nav-links a{
+  color:var(--text-secondary);
+  text-decoration:none;font-size:14px;
+  font-weight:500;letter-spacing:.3px;
+  transition:color .25s;position:relative;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;
+  background:var(--accent);transition:width .3s ease;
+}
+.nav-links a:hover{color:var(--text-primary)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{
+  background:linear-gradient(135deg,var(--accent),#5a4fcf);
+  color:#fff!important;
+  padding:8px 20px;
+  border-radius:6px;
+  font-weight:500!important;
+}
+.nav-cta::after{display:none!important}
+.nav-cta:hover{opacity:.9;transform:translateY(-1px)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
+.hamburger span{width:24px;height:2px;background:var(--text-primary);border-radius:1px;transition:.3s}
+.mobile-menu{
+  display:none;position:fixed;inset:0;
+  background:rgba(6,9,18,.97);
+  backdrop-filter:blur(20px);
+  z-index:99;
+  flex-direction:column;align-items:center;justify-content:center;
+  gap:32px;
+}
+.mobile-menu.open{display:flex}
+.mobile-menu a{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(24px,5vw,40px);
+  font-weight:700;
+  color:var(--text-primary);
+  text-decoration:none;
+  transition:color .25s;
+}
+.mobile-menu a:hover{color:var(--accent)}
+
+/* ===== HERO ===== */
+.hero{
+  min-height:100vh;
+  display:flex;align-items:center;
+  position:relative;
+  padding:120px clamp(20px,8vw,160px) 80px;
+  overflow:hidden;
+}
+.hero-bg-glow{
+  position:absolute;
+  border-radius:50%;
+  filter:blur(120px);
+  pointer-events:none;
+  z-index:0;
+}
+.glow1{
+  width:600px;height:600px;
+  background:radial-gradient(circle,rgba(124,110,255,.15),transparent 70%);
+  top:-100px;left:-100px;
+  animation:floatGlow 8s ease infinite;
+}
+.glow2{
+  width:500px;height:500px;
+  background:radial-gradient(circle,rgba(0,212,170,.1),transparent 70%);
+  bottom:0;right:-50px;
+  animation:floatGlow 10s ease infinite reverse;
+}
+@keyframes floatGlow{
+  0%,100%{transform:translateY(0) scale(1)}
+  50%{transform:translateY(-30px) scale(1.05)}
+}
+.hero-content{
+  position:relative;z-index:1;
+  max-width:900px;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(124,110,255,.1);
+  border:1px solid rgba(124,110,255,.25);
+  padding:6px 16px;border-radius:100px;
+  font-size:13px;color:var(--accent);
+  margin-bottom:28px;
+  animation:fadeSlideDown .8s ease forwards;opacity:0;
+}
+.hero-badge .dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--accent2);
+  animation:blink 2s ease infinite;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes fadeSlideDown{0%{opacity:0;transform:translateY(-20px)}100%{opacity:1;transform:translateY(0)}}
+@keyframes fadeSlideUp{0%{opacity:0;transform:translateY(30px)}100%{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{0%{opacity:0}100%{opacity:1}}
+
+.hero h1{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(40px,7vw,88px);
+  font-weight:800;
+  line-height:1.05;
+  letter-spacing:-2px;
+  animation:fadeSlideUp .9s .2s ease forwards;opacity:0;
+  margin-bottom:8px;
+}
+.hero h1 .name-accent{
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero-role{
+  font-size:clamp(18px,3vw,28px);
+  color:var(--text-secondary);
+  font-weight:300;
+  margin-bottom:24px;
+  animation:fadeSlideUp .9s .35s ease forwards;opacity:0;
+}
+.hero-role .typed{color:var(--accent2);font-weight:500}
+.hero-desc{
+  font-size:clamp(15px,2vw,18px);
+  color:var(--text-secondary);
+  max-width:580px;
+  line-height:1.75;
+  margin-bottom:40px;
+  animation:fadeSlideUp .9s .5s ease forwards;opacity:0;
+}
+.hero-stats{
+  display:flex;gap:40px;
+  margin-bottom:44px;
+  animation:fadeSlideUp .9s .65s ease forwards;opacity:0;
+  flex-wrap:wrap;
+}
+.stat{text-align:left}
+.stat-num{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(28px,4vw,42px);
+  font-weight:800;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  line-height:1.1;
+}
+.stat-label{font-size:13px;color:var(--text-muted);letter-spacing:.5px;text-transform:uppercase}
+.hero-ctas{
+  display:flex;gap:16px;flex-wrap:wrap;
+  animation:fadeSlideUp .9s .8s ease forwards;opacity:0;
+}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:10px;
+  background:linear-gradient(135deg,var(--accent),#5a4fcf);
+  color:#fff;font-weight:600;font-size:15px;
+  padding:14px 32px;border-radius:8px;
+  text-decoration:none;border:none;cursor:pointer;
+  transition:all .3s ease;
+  box-shadow:0 0 30px rgba(124,110,255,.3);
+  font-family:'DM Sans',sans-serif;
+}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 8px 40px rgba(124,110,255,.5)}
+.btn-secondary{
+  display:inline-flex;align-items:center;gap:10px;
+  background:transparent;
+  color:var(--text-primary);font-weight:500;font-size:15px;
+  padding:14px 32px;border-radius:8px;
+  text-decoration:none;
+  border:1px solid var(--glass-border);
+  transition:all .3s ease;
+  font-family:'DM Sans',sans-serif;
+}
+.btn-secondary:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-3px);background:rgba(124,110,255,.06)}
+.hero-scroll{
+  position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  color:var(--text-muted);font-size:12px;letter-spacing:1px;text-transform:uppercase;
+  animation:fadeIn 1s 1.5s forwards;opacity:0;
+}
+.scroll-line{
+  width:1px;height:40px;
+  background:linear-gradient(180deg,var(--accent),transparent);
+  animation:scrollBounce 2s ease infinite;
+}
+@keyframes scrollBounce{0%,100%{transform:scaleY(1);transform-origin:top}50%{transform:scaleY(1.3);transform-origin:top}}
+
+/* ===== SECTION BASE ===== */
+section{padding:var(--section-pad) clamp(20px,8vw,160px);position:relative;z-index:1}
+.section-label{
+  display:inline-block;
+  font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;
+  color:var(--accent);margin-bottom:16px;
+}
+.section-title{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(28px,4vw,48px);
+  font-weight:800;line-height:1.1;letter-spacing:-1px;
+  margin-bottom:16px;
+  color:var(--text-primary);
+}
+.section-subtitle{
+  font-size:clamp(15px,2vw,18px);
+  color:var(--text-secondary);
+  max-width:540px;
+  line-height:1.7;
+  margin-bottom:56px;
+}
+.reveal{
+  opacity:0;transform:translateY(40px);
+  transition:opacity .7s ease,transform .7s ease;
+}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .7s ease,transform .7s ease}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(40px);transition:opacity .7s ease,transform .7s ease}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+
+/* ===== ABOUT ===== */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.about-avatar-wrap{position:relative;display:flex;justify-content:center}
+.about-avatar{
+  width:clamp(240px,25vw,320px);
+  height:clamp(240px,25vw,320px);
+  border-radius:24px;
+  background:linear-gradient(135deg,#1a1f3c,#0d1021);
+  border:1px solid var(--glass-border);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+  font-family:'Syne',sans-serif;
+}
+.about-avatar::before{
+  content:'';
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(124,110,255,.15),rgba(0,212,170,.1));
+}
+.avatar-initials{
+  font-size:clamp(60px,8vw,80px);
+  font-weight:800;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  position:relative;z-index:1;
+  letter-spacing:-2px;
+}
+.about-avatar-badge{
+  position:absolute;
+  background:linear-gradient(135deg,var(--accent),#5a4fcf);
+  color:#fff;
+  padding:10px 20px;
+  border-radius:100px;
+  font-size:13px;font-weight:600;
+  white-space:nowrap;
+  box-shadow:0 8px 30px rgba(124,110,255,.4);
+}
+.badge-top{top:-16px;right:-20px}
+.badge-bottom{bottom:-16px;left:-20px;background:linear-gradient(135deg,var(--accent2),#0a9475)}
+.about-float-card{
+  position:absolute;
+  background:var(--bg-card);
+  border:1px solid var(--glass-border);
+  border-radius:12px;
+  padding:14px 18px;
+  font-size:13px;
+  animation:floatCard 4s ease infinite;
+}
+.about-float-card .fc-num{
+  font-family:'Syne',sans-serif;
+  font-size:22px;font-weight:800;
+  color:var(--accent);
+}
+.about-float-card .fc-label{color:var(--text-secondary);font-size:12px}
+.fc1{top:20%;right:-60px;animation-delay:0s}
+.fc2{bottom:20%;left:-60px;animation-delay:2s}
+@keyframes floatCard{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.about-text h3{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(22px,3vw,32px);
+  font-weight:700;margin-bottom:16px;
+}
+.about-text p{color:var(--text-secondary);line-height:1.8;margin-bottom:20px;font-size:15px}
+.about-highlights{
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;
+  margin-top:28px;
+}
+.highlight-item{
+  display:flex;align-items:center;gap:10px;
+  color:var(--text-secondary);font-size:14px;
+}
+.highlight-item .hi-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  flex-shrink:0;
+}
+
+/* ===== SKILLS ===== */
+.skills-section{background:linear-gradient(180deg,transparent,rgba(124,110,255,.03),transparent)}
+.skills-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+  gap:16px;
+}
+.skill-card{
+  background:var(--bg-card);
+  border:1px solid var(--glass-border);
+  border-radius:16px;
+  padding:24px 20px;
+  text-align:center;
+  cursor:default;
+  transition:all .35s ease;
+  position:relative;overflow:hidden;
+}
+.skill-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  opacity:0;transition:opacity .35s;
+}
+.skill-card:hover{border-color:var(--accent);transform:translateY(-6px);box-shadow:0 16px 40px rgba(124,110,255,.2)}
+.skill-card:hover::before{opacity:.06}
+.skill-icon{
+  font-size:36px;margin-bottom:10px;
+  position:relative;z-index:1;
+  display:block;
+}
+.skill-name{
+  font-size:13px;font-weight:600;
+  color:var(--text-primary);
+  position:relative;z-index:1;
+}
+.skill-cat{
+  font-size:11px;color:var(--text-muted);
+  position:relative;z-index:1;
+  margin-top:4px;
+}
+.skills-categories{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:40px}
+.skill-filter{
+  padding:6px 16px;border-radius:100px;
+  border:1px solid var(--glass-border);
+  background:transparent;
+  color:var(--text-secondary);
+  font-size:13px;cursor:pointer;
+  transition:all .25s;font-family:'DM Sans',sans-serif;
+}
+.skill-filter.active,
+.skill-filter:hover{
+  background:rgba(124,110,255,.15);
+  border-color:var(--accent);
+  color:var(--accent);
+}
+
+/* ===== PROJECTS ===== */
+.projects-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+  gap:24px;
+}
+.project-card{
+  background:var(--bg-card);
+  border:1px solid var(--glass-border);
+  border-radius:20px;
+  overflow:hidden;
+  transition:all .4s ease;
+  cursor:pointer;
+  position:relative;
+}
+.project-card:hover{border-color:rgba(124,110,255,.35);transform:translateY(-8px);box-shadow:0 24px 60px rgba(124,110,255,.15)}
+.project-visual{
+  height:200px;
+  background:linear-gradient(135deg,#1a1f3c,#0d1021);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.project-visual::before{
+  content:'';position:absolute;inset:0;
+  opacity:.15;
+}
+.project-emoji{font-size:56px;position:relative;z-index:1;filter:drop-shadow(0 4px 20px rgba(0,0,0,.5))}
+.project-badge{
+  position:absolute;top:16px;left:16px;
+  background:rgba(0,0,0,.6);
+  backdrop-filter:blur(10px);
+  border:1px solid var(--glass-border);
+  padding:4px 12px;border-radius:100px;
+  font-size:12px;color:var(--accent2);font-weight:500;
+}
+.project-badge.hot{color:#ff6b6b;border-color:rgba(255,107,107,.25)}
+.project-body{padding:24px}
+.project-name{
+  font-family:'Syne',sans-serif;
+  font-size:20px;font-weight:700;
+  margin-bottom:8px;color:var(--text-primary);
+}
+.project-desc{
+  font-size:14px;color:var(--text-secondary);
+  line-height:1.7;margin-bottom:16px;
+}
+.project-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
+.tag{
+  font-size:11px;font-weight:600;letter-spacing:.5px;
+  padding:3px 10px;border-radius:100px;
+  background:rgba(124,110,255,.1);
+  color:var(--accent);
+  border:1px solid rgba(124,110,255,.2);
+}
+.project-links{display:flex;gap:10px;flex-wrap:wrap}
+.project-link{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:12px;font-weight:600;
+  padding:7px 14px;border-radius:6px;
+  text-decoration:none;
+  border:1px solid var(--glass-border);
+  color:var(--text-secondary);
+  transition:all .25s;
+}
+.project-link:hover{border-color:var(--accent);color:var(--accent);background:rgba(124,110,255,.06)}
+.project-link.android{border-color:rgba(0,212,170,.2);color:var(--accent2)}
+.project-link.android:hover{background:rgba(0,212,170,.08);border-color:var(--accent2)}
+.project-link.ios{border-color:rgba(255,107,107,.2);color:#ff9f9f}
+.project-link.ios:hover{background:rgba(255,107,107,.08);border-color:#ff6b6b}
+
+/* ===== EXPERIENCE ===== */
+.experience-section{background:linear-gradient(180deg,transparent,rgba(0,212,170,.02),transparent)}
+.timeline{position:relative;padding-left:32px}
+.timeline::before{
+  content:'';position:absolute;left:8px;top:8px;bottom:8px;
+  width:1px;background:linear-gradient(180deg,var(--accent),var(--accent2),transparent);
+}
+.timeline-item{
+  position:relative;margin-bottom:48px;
+}
+.timeline-item:last-child{margin-bottom:0}
+.tl-dot{
+  position:absolute;left:-32px;top:6px;
+  width:17px;height:17px;border-radius:50%;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  border:3px solid var(--bg-deep);
+  box-shadow:0 0 15px rgba(124,110,255,.5);
+}
+.tl-card{
+  background:var(--bg-card);
+  border:1px solid var(--glass-border);
+  border-radius:16px;
+  padding:24px 28px;
+  transition:all .35s ease;
+}
+.tl-card:hover{border-color:rgba(124,110,255,.25);transform:translateX(6px)}
+.tl-header{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:12px}
+.tl-role{
+  font-family:'Syne',sans-serif;
+  font-size:18px;font-weight:700;color:var(--text-primary);
+}
+.tl-company{
+  font-size:14px;font-weight:500;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  margin-bottom:6px;
+}
+.tl-period{
+  font-size:12px;color:var(--text-muted);
+  padding:4px 12px;
+  background:rgba(255,255,255,.04);
+  border:1px solid var(--glass-border);
+  border-radius:100px;
+  white-space:nowrap;
+}
+.tl-desc{font-size:14px;color:var(--text-secondary);line-height:1.7}
+.tl-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+
+/* ===== SERVICES ===== */
+.services-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:20px;
+}
+.service-card{
+  background:var(--bg-card);
+  border:1px solid var(--glass-border);
+  border-radius:20px;
+  padding:32px 28px;
+  transition:all .4s ease;
+  position:relative;overflow:hidden;
+}
+.service-card::after{
+  content:'';
+  position:absolute;
+  bottom:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .4s ease;
+}
+.service-card:hover{border-color:rgba(124,110,255,.25);transform:translateY(-6px);box-shadow:0 20px 50px rgba(124,110,255,.12)}
+.service-card:hover::after{transform:scaleX(1)}
+.service-icon{
+  font-size:40px;margin-bottom:20px;display:block;
+}
+.service-name{
+  font-family:'Syne',sans-serif;
+  font-size:18px;font-weight:700;
+  margin-bottom:12px;color:var(--text-primary);
+}
+.service-desc{font-size:14px;color:var(--text-secondary);line-height:1.7}
+
+/* ===== ACHIEVEMENTS ===== */
+.achievements-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
+}
+.achievement-card{
+  background:var(--bg-card);
+  border:1px solid var(--glass-border);
+  border-radius:16px;
+  padding:28px 24px;
+  text-align:center;
+  transition:all .35s ease;
+  position:relative;overflow:hidden;
+}
+.achievement-card::before{
+  content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:60%;height:1px;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);
+}
+.achievement-card:hover{transform:translateY(-6px);border-color:rgba(124,110,255,.25)}
+.ach-icon{font-size:36px;margin-bottom:12px;display:block}
+.ach-num{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(28px,4vw,40px);font-weight:800;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  margin-bottom:6px;
+}
+.ach-label{font-size:14px;color:var(--text-secondary);font-weight:400}
+
+/* ===== CONTACT ===== */
+.contact-section{background:linear-gradient(180deg,transparent,rgba(124,110,255,.03),transparent)}
+.contact-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:60px;align-items:start}
+.contact-info h3{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(22px,3vw,32px);font-weight:700;
+  margin-bottom:16px;
+}
+.contact-info p{color:var(--text-secondary);line-height:1.8;margin-bottom:32px}
+.contact-items{display:flex;flex-direction:column;gap:16px}
+.contact-item{
+  display:flex;align-items:center;gap:14px;
+  color:var(--text-secondary);font-size:14px;
+  text-decoration:none;
+  transition:color .25s;
+}
+.contact-item:hover{color:var(--accent)}
+.contact-icon{
+  width:44px;height:44px;border-radius:10px;
+  background:rgba(124,110,255,.1);
+  border:1px solid rgba(124,110,255,.2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+  transition:all .25s;
+}
+.contact-item:hover .contact-icon{background:rgba(124,110,255,.2);transform:scale(1.05)}
+.socials{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap}
+.social-btn{
+  display:flex;align-items:center;gap:8px;
+  padding:10px 18px;border-radius:8px;
+  border:1px solid var(--glass-border);
+  color:var(--text-secondary);
+  text-decoration:none;font-size:13px;font-weight:500;
+  transition:all .25s;
+}
+.social-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(124,110,255,.06);transform:translateY(-2px)}
+.social-icon{font-size:16px}
+
+/* Contact Form */
+.contact-form{
+  background:var(--bg-card);
+  border:1px solid var(--glass-border);
+  border-radius:20px;
+  padding:36px 32px;
+}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-group{margin-bottom:20px}
+.form-label{
+  display:block;font-size:13px;font-weight:500;
+  color:var(--text-secondary);margin-bottom:8px;
+  letter-spacing:.3px;
+}
+.form-control{
+  width:100%;
+  background:rgba(255,255,255,.03);
+  border:1px solid var(--glass-border);
+  border-radius:8px;
+  padding:12px 16px;
+  color:var(--text-primary);
+  font-family:'DM Sans',sans-serif;
+  font-size:14px;
+  transition:all .25s;
+  outline:none;
+}
+.form-control:focus{border-color:var(--accent);background:rgba(124,110,255,.05);box-shadow:0 0 0 3px rgba(124,110,255,.1)}
+.form-control::placeholder{color:var(--text-muted)}
+textarea.form-control{resize:vertical;min-height:120px}
+.form-submit{
+  width:100%;
+  background:linear-gradient(135deg,var(--accent),#5a4fcf);
+  color:#fff;font-weight:600;font-size:15px;
+  padding:14px;border-radius:8px;
+  border:none;cursor:pointer;
+  font-family:'DM Sans',sans-serif;
+  transition:all .3s ease;
+  box-shadow:0 0 30px rgba(124,110,255,.3);
+}
+.form-submit:hover{transform:translateY(-2px);box-shadow:0 8px 40px rgba(124,110,255,.5)}
+.form-submit:active{transform:translateY(0)}
+.form-success{display:none;text-align:center;padding:20px;color:var(--accent2)}
+
+/* ===== FOOTER ===== */
+footer{
+  padding:40px clamp(20px,8vw,160px);
+  border-top:1px solid var(--glass-border);
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:16px;
+}
+.footer-brand{
+  font-family:'Syne',sans-serif;
+  font-size:18px;font-weight:800;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.footer-copy{font-size:13px;color:var(--text-muted)}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:900px){
+  .about-grid{grid-template-columns:1fr;gap:48px;text-align:center}
+  .about-highlights{grid-template-columns:1fr}
+  .fc1,.fc2{display:none}
+  .contact-grid{grid-template-columns:1fr;gap:40px}
+  .form-row{grid-template-columns:1fr}
+}
+@media(max-width:768px){
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .hero{padding:100px 20px 60px}
+  .hero-stats{gap:24px}
+  .about-avatar{width:200px;height:200px}
+  .projects-grid{grid-template-columns:1fr}
+}
+@media(max-width:480px){
+  .achievements-grid{grid-template-columns:1fr 1fr}
+  .hero-ctas{flex-direction:column}
+  .btn-primary,.btn-secondary{justify-content:center}
+}
+
+.project-app-icon{
+  width:110px;height:110px;
+  border-radius:22px;
+  object-fit:cover;
+  position:relative;z-index:1;
+  box-shadow:0 8px 32px rgba(0,0,0,.55), 0 0 0 3px rgba(255,255,255,.08);
+  transition:transform .35s ease, box-shadow .35s ease;
+}
+.project-card:hover .project-app-icon{
+  transform:scale(1.08) translateY(-4px);
+  box-shadow:0 16px 48px rgba(0,0,0,.7), 0 0 0 3px rgba(255,255,255,.14);
+}
+
+/* ===== CURSOR DOT ===== */
+.cursor-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--accent);
+  position:fixed;pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%);
+  transition:transform .1s;
+  mix-blend-mode:difference;
+}
+.cursor-ring{
+  width:36px;height:36px;border-radius:50%;
+  border:1px solid rgba(124,110,255,.5);
+  position:fixed;pointer-events:none;z-index:9997;
+  transform:translate(-50%,-50%);
+  transition:all .15s ease;
+}
+
+/* ===== ANIMATED BG GRID ===== */
+.hero-grid{
+  position:absolute;inset:0;z-index:0;
+  background-image:
+    linear-gradient(rgba(124,110,255,.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(124,110,255,.03) 1px,transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse at center,black 30%,transparent 80%);
+}
+</style>
+</head>
+<body>
+
+<!-- Scroll Progress -->
+<div id="scroll-progress"></div>
+
+<!-- Cursor -->
+<div class="cursor-dot" id="cursor-dot"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+
+<!-- Loader -->
+<div id="loader">
+  <div class="loader-logo">ZA</div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+</div>
+
+<!-- Navigation -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">Zeeshan Akhtar</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#contact" class="nav-cta">Hire Me</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#about" onclick="closeMobile()">About</a>
+  <a href="#skills" onclick="closeMobile()">Skills</a>
+  <a href="#projects" onclick="closeMobile()">Projects</a>
+  <a href="#experience" onclick="closeMobile()">Experience</a>
+  <a href="#services" onclick="closeMobile()">Services</a>
+  <a href="#contact" onclick="closeMobile()">Hire Me</a>
+</div>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-bg-glow glow1"></div>
+  <div class="hero-bg-glow glow2"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      Available for new opportunities
+    </div>
+    <h1>
+      Hi, I'm<br/>
+      <span class="name-accent">Zeeshan Akhtar</span>
+    </h1>
+    <p class="hero-role">
+      Mobile App Developer &amp; <span class="typed" id="typed-text"></span>
+    </p>
+    <p class="hero-desc">
+      4+ years crafting high-performance Flutter apps for Android &amp; iOS. 50+ apps shipped across Pakistan, UK, Lebanon, UAE &amp; beyond — I turn complex ideas into elegant, scalable, production-ready mobile experiences.
+    </p>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num" data-count="4">0</div>
+        <div class="stat-label">Years Experience</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" data-count="50" data-suffix="+">0</div>
+        <div class="stat-label">Apps Shipped</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" data-prefix="" data-count="100" data-suffix="K+">0</div>
+        <div class="stat-label">Downloads</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" data-count="50" data-suffix="+">0</div>
+        <div class="stat-label">GitHub Repos</div>
+      </div>
+    </div>
+    <div class="hero-ctas">
+      <a href="#projects" class="btn-primary">
+        <span>View My Work</span>
+        <span>→</span>
+      </a>
+      <a href="#contact" class="btn-secondary">
+        <span>📩</span>
+        <span>Get In Touch</span>
+      </a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ===== ABOUT ===== -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-avatar-wrap reveal-left">
+      <div class="about-avatar">
+        <div class="avatar-initials">ZA</div>
+      </div>
+      <div class="about-avatar-badge badge-top">🏆 Senior Developer</div>
+      <div class="about-avatar-badge badge-bottom">📍 Pakistan</div>
+      <div class="about-float-card fc1">
+        <div class="fc-num">100K+</div>
+        <div class="fc-label">App Downloads</div>
+      </div>
+      <div class="about-float-card fc2">
+        <div class="fc-num">50+</div>
+        <div class="fc-label">Apps on GitHub</div>
+      </div>
+    </div>
+    <div class="about-text reveal-right">
+      <div class="section-label">About Me</div>
+      <div class="section-title" style="margin-bottom:20px">The Developer<br/>Behind the Code</div>
+      <p>I'm Zeeshan Akhtar, a passionate Flutter &amp; Node.js specialist from Layyah, Punjab, Pakistan. With 4+ years of hands-on experience, I've built apps used by over 100,000 people across transport, e-commerce, wellness, and social platforms.</p>
+      <p>I hold a Bachelor of Computer Science from Government College University Faisalabad. My focus is on clean architecture, seamless UX, and robust backend integration that makes apps scale and feel great.</p>
+      <div class="about-highlights">
+        <div class="highlight-item"><span class="hi-dot"></span>Flutter &amp; Dart Expert</div>
+        <div class="highlight-item"><span class="hi-dot"></span>Node.js &amp; REST APIs</div>
+        <div class="highlight-item"><span class="hi-dot"></span>Firebase Integration</div>
+        <div class="highlight-item"><span class="hi-dot"></span>Clean Architecture (MVVM)</div>
+        <div class="highlight-item"><span class="hi-dot"></span>Android &amp; iOS Deployment</div>
+        <div class="highlight-item"><span class="hi-dot"></span>UI/UX Focused</div>
+        <div class="highlight-item"><span class="hi-dot"></span>State Management (BLoC)</div>
+        <div class="highlight-item"><span class="hi-dot"></span>Payment Integrations</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SKILLS ===== -->
+<section id="skills" class="skills-section">
+  <div style="text-align:center;max-width:560px;margin:0 auto 56px" class="reveal">
+    <div class="section-label">Tech Stack</div>
+    <div class="section-title">Skills &amp; Technologies</div>
+    <p class="section-subtitle" style="margin:0 auto">Tools and technologies I use to build world-class mobile applications.</p>
+  </div>
+  <div class="skills-grid reveal">
+    <div class="skill-card"><span class="skill-icon">💙</span><div class="skill-name">Flutter</div><div class="skill-cat">Mobile</div></div>
+    <div class="skill-card"><span class="skill-icon">🎯</span><div class="skill-name">Dart</div><div class="skill-cat">Language</div></div>
+    <div class="skill-card"><span class="skill-icon">🟢</span><div class="skill-name">Node.js</div><div class="skill-cat">Backend</div></div>
+    <div class="skill-card"><span class="skill-icon">🔥</span><div class="skill-name">Firebase</div><div class="skill-cat">Backend</div></div>
+    <div class="skill-card"><span class="skill-icon">🤖</span><div class="skill-name">Android</div><div class="skill-cat">Platform</div></div>
+    <div class="skill-card"><span class="skill-icon">🍎</span><div class="skill-name">iOS</div><div class="skill-cat">Platform</div></div>
+    <div class="skill-card"><span class="skill-icon">🗄️</span><div class="skill-name">MongoDB</div><div class="skill-cat">Database</div></div>
+    <div class="skill-card"><span class="skill-icon">📦</span><div class="skill-name">BLoC/Riverpod</div><div class="skill-cat">State Mgmt</div></div>
+    <div class="skill-card"><span class="skill-icon">🌐</span><div class="skill-name">REST APIs</div><div class="skill-cat">Integration</div></div>
+    <div class="skill-card"><span class="skill-icon">💳</span><div class="skill-name">Stripe/PayPal</div><div class="skill-cat">Payments</div></div>
+    <div class="skill-card"><span class="skill-icon">🗺️</span><div class="skill-name">Google Maps</div><div class="skill-cat">Maps SDK</div></div>
+    <div class="skill-card"><span class="skill-icon">💬</span><div class="skill-name">WebSockets</div><div class="skill-cat">Real-time</div></div>
+    <div class="skill-card"><span class="skill-icon">🐙</span><div class="skill-name">Git/GitHub</div><div class="skill-cat">DevOps</div></div>
+    <div class="skill-card"><span class="skill-icon">📲</span><div class="skill-name">Push Notifications</div><div class="skill-cat">Engagement</div></div>
+    <div class="skill-card"><span class="skill-icon">🏗️</span><div class="skill-name">MVVM/Clean</div><div class="skill-cat">Architecture</div></div>
+    <div class="skill-card"><span class="skill-icon">🐍</span><div class="skill-name">Python</div><div class="skill-cat">Language</div></div>
+  </div>
+</section>
+
+<!-- ===== PROJECTS ===== -->
+<section id="projects">
+  <div class="reveal">
+    <div class="section-label">Portfolio</div>
+    <div class="section-title">Featured Projects</div>
+    <p class="section-subtitle">50+ apps shipped across Android &amp; iOS. Below are the most notable — live on Google Play &amp; App Store, used by hundreds of thousands worldwide.</p>
+  </div>
+  <div class="projects-grid">
+
+    <!-- Baloch Transport -->
+    <div class="project-card reveal" style="transition-delay:.1s">
+      <div class="project-visual" style="background:linear-gradient(135deg,#0f2027,#203a43,#2c5364)">
+        <img src="https://play-lh.googleusercontent.com/HDD_QI4IJD6_XddsVAUIlihesXc2DrpwEKub5z8lV1CfE5I6oIA8Oo7H9x8xuC4vEHM=w480-h960-rw" class="project-app-icon" alt="Baloch Transport icon"/>
+        <div class="project-badge hot">🔥 100K+ Downloads</div>
+      </div>
+      <div class="project-body">
+        <div class="project-name">Baloch Transport</div>
+        <div class="project-desc">Pakistan's leading online bus ticket booking platform. Real-time seat selection, ticket booking, route tracking, and secure payments for intercity travel.</div>
+        <div class="project-tags">
+          <span class="tag">Flutter</span><span class="tag">Node.js</span><span class="tag">Firebase</span><span class="tag">Google Maps</span><span class="tag">Payments</span>
+        </div>
+        <div class="project-links">
+          <a href="https://play.google.com/store/apps/details?id=com.brikmas.balochtransport" target="_blank" class="project-link android">▶ Play Store</a>
+          <a href="https://apps.apple.com/us/app/baloch-transport/id1514959195" target="_blank" class="project-link ios"> App Store</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Aurylius -->
+    <div class="project-card reveal" style="transition-delay:.15s">
+      <div class="project-visual" style="background:linear-gradient(135deg,#1a0533,#3d0d63,#200a3e)">
+        <img src="https://play-lh.googleusercontent.com/fdLMPzFSs2PDMA2L2LyYz3ZdosI2vaIfXE_-khLXNNjUJBHsmjga9rYw2RDZR8iXEnJcRnIP4cRWIBRALVqz=w480-h960-rw" class="project-app-icon" alt="Aurylius icon"/>
+        <div class="project-badge">UK App</div>
+      </div>
+      <div class="project-body">
+        <div class="project-name">Aurylius</div>
+        <div class="project-desc">Turn scrolling into progress. A habit-building and personal growth app that replaces mindless scrolling with meaningful challenges that actually stick.</div>
+        <div class="project-tags">
+          <span class="tag">Flutter</span><span class="tag">Firebase</span><span class="tag">REST API</span><span class="tag">Gamification</span>
+        </div>
+        <div class="project-links">
+          <a href="https://play.google.com/store/apps/details?id=com.aurylius.auryliusapp" target="_blank" class="project-link android">▶ Play Store</a>
+          <a href="https://apps.apple.com/us/app/aurylius/id6755753775" target="_blank" class="project-link ios"> App Store</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Blaxity -->
+    <div class="project-card reveal" style="transition-delay:.2s">
+      <div class="project-visual" style="background:linear-gradient(135deg,#1a0a2e,#16213e,#0f3460)">
+        <img src="https://play-lh.googleusercontent.com/pvhTrgDwKyu5V81_YAmeBoGAKPqInRyDBUnYwyPeIaxyVwSffpXIDlHUW6VDtOJQJQ=w480-h960-rw" class="project-app-icon" alt="Blaxity icon"/>
+        <div class="project-badge">Social App</div>
+      </div>
+      <div class="project-body">
+        <div class="project-name">Blaxity</div>
+        <div class="project-desc">A premium dating app for couples and singles. Features include real-time chat, matching algorithm, profile customization, and secure in-app payments.</div>
+        <div class="project-tags">
+          <span class="tag">Flutter</span><span class="tag">WebSockets</span><span class="tag">Firebase</span><span class="tag">Stripe</span>
+        </div>
+        <div class="project-links">
+          <a href="https://play.google.com/store/apps/details?id=com.appp.blaxity" target="_blank" class="project-link android">▶ Play Store</a>
+          <a href="https://apps.apple.com/us/app/blaxity-dating-meet-couples/id1481975275" target="_blank" class="project-link ios"> App Store</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hooray -->
+    <div class="project-card reveal" style="transition-delay:.25s">
+      <div class="project-visual" style="background:linear-gradient(135deg,#0d3323,#1a5c3a,#0a2417)">
+        <img src="https://play-lh.googleusercontent.com/8Ybg9GSDD2Gvibfy16MndTqqp7nt9irpBQpVkcOOJN997T3Z9D4LcOrW0te2GDpA7c0=w480-h960-rw" class="project-app-icon" alt="Hooray icon"/>
+        <div class="project-badge">Lebanon</div>
+      </div>
+      <div class="project-body">
+        <div class="project-name">Hooray LB</div>
+        <div class="project-desc">A social events and entertainment platform for Lebanon. Discover local events, book tickets, and connect with your community in one seamless app.</div>
+        <div class="project-tags">
+          <span class="tag">Flutter</span><span class="tag">Node.js</span><span class="tag">REST API</span><span class="tag">Maps</span>
+        </div>
+        <div class="project-links">
+          <a href="https://play.google.com/store/apps/details?id=com.codergize.hooray" target="_blank" class="project-link android">▶ Play Store</a>
+          <a href="https://apps.apple.com/us/app/hooray-lb/id6737291860" target="_blank" class="project-link ios"> App Store</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- SavenCrave -->
+    <div class="project-card reveal" style="transition-delay:.3s">
+      <div class="project-visual" style="background:linear-gradient(135deg,#2d1b00,#5a3500,#3d2200)">
+        <img src="https://play-lh.googleusercontent.com/Qcc6uJnnEaSSGr5qjS8Slxlsn5d1HeuAjMJahIwox2IXY4AZ4ddBGX3NwM2t5ITyI1Q=w480-h960-rw" class="project-app-icon" alt="SavenCrave icon"/>
+        <div class="project-badge">E-Commerce</div>
+      </div>
+      <div class="project-body">
+        <div class="project-name">SavenCrave</div>
+        <div class="project-desc">Smart savings meets food cravings. A deals &amp; discount platform connecting users with the best restaurant offers and food delivery promotions.</div>
+        <div class="project-tags">
+          <span class="tag">Flutter</span><span class="tag">Firebase</span><span class="tag">Node.js</span><span class="tag">Payments</span>
+        </div>
+        <div class="project-links">
+          <a href="https://play.google.com/store/apps/details?id=com.codergize.savencrave" target="_blank" class="project-link android">▶ Play Store</a>
+          <a href="https://apps.apple.com/us/app/savencrave/id6736619591" target="_blank" class="project-link ios"> App Store</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- MegaMart -->
+    <div class="project-card reveal" style="transition-delay:.35s">
+      <div class="project-visual" style="background:linear-gradient(135deg,#001a33,#003366,#001122)">
+        <img src="https://play-lh.googleusercontent.com/xJnKr0MuvAwPxj4VVe_Qu46ajdOr1KaXuytuZvgXFT3QmHskfEbueuR5JN9Oe1HoeQ=w480-h960-rw" class="project-app-icon" alt="MegaMart icon"/>
+        <div class="project-badge">Liberia</div>
+      </div>
+      <div class="project-body">
+        <div class="project-name">MegaMart Liberia</div>
+        <div class="project-desc">Full-featured e-commerce marketplace for Liberia. Browse categories, cart management, order tracking, multiple payment methods, and real-time notifications.</div>
+        <div class="project-tags">
+          <span class="tag">Flutter</span><span class="tag">Node.js</span><span class="tag">MongoDB</span><span class="tag">Firebase</span>
+        </div>
+        <div class="project-links">
+          <a href="https://play.google.com/store/apps/details?id=com.codergize.megamarttt" target="_blank" class="project-link android">▶ Play Store</a>
+          <a href="https://apps.apple.com/us/app/megamart-liberia/id6736756426" target="_blank" class="project-link ios"> App Store</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fee Management -->
+    <div class="project-card reveal" style="transition-delay:.4s">
+      <div class="project-visual" style="background:linear-gradient(135deg,#0a1628,#1e3a5f,#0d2240)">
+        <img src="https://play-lh.googleusercontent.com/ztAppCSzMWKTFHcrhw6WWBiKVcWzDdD9PUi6pOL8z7CK0OUc5nZkxSu4y5ROISwcv3o=w480-h960-rw" class="project-app-icon" alt="Fee Management icon"/>
+        <div class="project-badge">EdTech</div>
+      </div>
+      <div class="project-body">
+        <div class="project-name">Fee Management</div>
+        <div class="project-desc">A comprehensive school &amp; institution fee management system. Track payments, generate receipts, manage students, and automate reminders seamlessly.</div>
+        <div class="project-tags">
+          <span class="tag">Flutter</span><span class="tag">Firebase</span><span class="tag">Node.js</span><span class="tag">Notifications</span>
+        </div>
+        <div class="project-links">
+          <a href="https://play.google.com/store/apps/details?id=com.codergize.fee" target="_blank" class="project-link android">▶ Play Store</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Noor Marine Cargo -->
+    <div class="project-card reveal" style="transition-delay:.45s">
+      <div class="project-visual" style="background:linear-gradient(135deg,#002233,#004466,#001a2e)">
+        <span class="project-emoji" style="font-size:72px;filter:drop-shadow(0 8px 24px rgba(0,0,0,.6))">🚢</span>
+        <div class="project-badge">UAE / Cargo</div>
+      </div>
+      <div class="project-body">
+        <div class="project-name">Noor Marine Cargo</div>
+        <div class="project-desc">UAE-based cargo and logistics tracking app. Real-time shipment tracking, delivery management, cargo booking, and fleet coordination for maritime logistics.</div>
+        <div class="project-tags">
+          <span class="tag">Flutter</span><span class="tag">Maps API</span><span class="tag">Node.js</span><span class="tag">Real-time</span>
+        </div>
+        <div class="project-links">
+          <a href="https://play.google.com/store/apps/details?id=com.nmc.nmccargo" target="_blank" class="project-link android">▶ Play Store</a>
+          <a href="https://apps.apple.com/us/app/noor-marine-cargo/id6744535066" target="_blank" class="project-link ios"> App Store</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div style="text-align:center;margin-top:48px" class="reveal">
+    <a href="https://github.com/zeeshanakhtar012" target="_blank" class="btn-secondary" style="display:inline-flex;align-items:center;gap:10px;font-size:15px;padding:14px 36px">
+      <span>🐙</span>
+      <span>View All 50+ Projects on GitHub</span>
+      <span>→</span>
+    </a>
+  </div>
+</section>
+<section id="experience" class="experience-section">
+  <div class="reveal">
+    <div class="section-label">Career</div>
+    <div class="section-title">Work Experience</div>
+    <p class="section-subtitle">My professional journey building mobile applications across Pakistan, UK, Lebanon, and UAE.</p>
+  </div>
+  <div class="timeline">
+
+    <div class="timeline-item reveal" style="transition-delay:.1s">
+      <div class="tl-dot"></div>
+      <div class="tl-card">
+        <div class="tl-header">
+          <div>
+            <div class="tl-role">Mobile Application Developer</div>
+            <div class="tl-company">Aurylius — United Kingdom (Remote)</div>
+          </div>
+          <div class="tl-period">2025 – Present</div>
+        </div>
+        <div class="tl-desc">Building and maintaining the Aurylius growth platform for UK audiences. Leading Flutter development, API integration, and feature design for habit-tracking and challenge systems.</div>
+        <div class="tl-tags">
+          <span class="tag">Flutter</span><span class="tag">Firebase</span><span class="tag">REST API</span><span class="tag">Gamification</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item reveal" style="transition-delay:.2s">
+      <div class="tl-dot"></div>
+      <div class="tl-card">
+        <div class="tl-header">
+          <div>
+            <div class="tl-role">Senior Software Engineer</div>
+            <div class="tl-company">CoderGize — Lebanon (Remote)</div>
+          </div>
+          <div class="tl-period">Mar 2024 – May 2025</div>
+        </div>
+        <div class="tl-desc">Led mobile development for multiple production apps including Hooray LB, SavenCrave, MegaMart, and Fee Management. Designed scalable architectures and delivered full-stack features from backend to Play/App Store deployment.</div>
+        <div class="tl-tags">
+          <span class="tag">Flutter</span><span class="tag">Node.js</span><span class="tag">MongoDB</span><span class="tag">Firebase</span><span class="tag">Team Lead</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item reveal" style="transition-delay:.3s">
+      <div class="tl-dot"></div>
+      <div class="tl-card">
+        <div class="tl-header">
+          <div>
+            <div class="tl-role">Flutter Developer — Baloch Transport</div>
+            <div class="tl-company">Baloch Transport Service — Pakistan (Onsite)</div>
+          </div>
+          <div class="tl-period">Nov 2024 – Present</div>
+        </div>
+        <div class="tl-desc">Core developer for Pakistan's #1 bus booking app with 100,000+ downloads. Worked on real-time seat availability, ticket generation, payment processing, and live route tracking features.</div>
+        <div class="tl-tags">
+          <span class="tag">Flutter</span><span class="tag">Real-time</span><span class="tag">Google Maps</span><span class="tag">Payments</span><span class="tag">100K+ Users</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item reveal" style="transition-delay:.4s">
+      <div class="tl-dot"></div>
+      <div class="tl-card">
+        <div class="tl-header">
+          <div>
+            <div class="tl-role">Flutter Mobile App Developer</div>
+            <div class="tl-company">Skyline Coderz — Pakistan (Hybrid)</div>
+          </div>
+          <div class="tl-period">2023 – 2024</div>
+        </div>
+        <div class="tl-desc">Developed consumer mobile apps with modern UI/UX, state management using BLoC and Riverpod, and integrations with third-party APIs and Firebase services.</div>
+        <div class="tl-tags">
+          <span class="tag">Flutter</span><span class="tag">BLoC</span><span class="tag">Firebase</span><span class="tag">UI/UX</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item reveal" style="transition-delay:.5s">
+      <div class="tl-dot"></div>
+      <div class="tl-card">
+        <div class="tl-header">
+          <div>
+            <div class="tl-role">Mobile Application Developer</div>
+            <div class="tl-company">SoftMAT Devs — Muzaffargarh, Pakistan</div>
+          </div>
+          <div class="tl-period">2021 – 2023</div>
+        </div>
+        <div class="tl-desc">Started my professional career building mobile applications and desktop software. Worked with Python, C++, C#, and early Flutter projects while completing my Computer Science degree.</div>
+        <div class="tl-tags">
+          <span class="tag">Flutter</span><span class="tag">Python</span><span class="tag">C++</span><span class="tag">C#</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== SERVICES ===== -->
+<section id="services">
+  <div style="text-align:center;max-width:560px;margin:0 auto 56px" class="reveal">
+    <div class="section-label">What I Offer</div>
+    <div class="section-title">Services</div>
+    <p class="section-subtitle" style="margin:0 auto">End-to-end mobile development services to take your idea from concept to App Store.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card reveal" style="transition-delay:.1s">
+      <span class="service-icon">📱</span>
+      <div class="service-name">Flutter App Development</div>
+      <div class="service-desc">Cross-platform apps for Android &amp; iOS from a single codebase. Clean UI, smooth animations, and production-ready architecture with BLoC, Riverpod, or GetX.</div>
+    </div>
+    <div class="service-card reveal" style="transition-delay:.15s">
+      <span class="service-icon">⚙️</span>
+      <div class="service-name">Backend &amp; API Development</div>
+      <div class="service-desc">Scalable REST APIs with Node.js and Express. MongoDB integration, authentication (JWT/OAuth), real-time features with WebSockets, and cloud deployment.</div>
+    </div>
+    <div class="service-card reveal" style="transition-delay:.2s">
+      <span class="service-icon">🔥</span>
+      <div class="service-name">Firebase Integration</div>
+      <div class="service-desc">Full Firebase setup: Firestore, Auth, Cloud Functions, Push Notifications (FCM), Analytics, Remote Config, and Crashlytics for robust app infrastructure.</div>
+    </div>
+    <div class="service-card reveal" style="transition-delay:.25s">
+      <span class="service-icon">🏪</span>
+      <div class="service-name">App Store Deployment</div>
+      <div class="service-desc">Complete Play Store &amp; App Store submission process. Store listing optimization, screenshots, metadata, signing configuration, and review compliance.</div>
+    </div>
+    <div class="service-card reveal" style="transition-delay:.3s">
+      <span class="service-icon">💳</span>
+      <div class="service-name">Payment Integration</div>
+      <div class="service-desc">Stripe, PayPal, and in-app purchases. Secure payment flows, subscription management, order tracking, and receipt generation for e-commerce and booking apps.</div>
+    </div>
+    <div class="service-card reveal" style="transition-delay:.35s">
+      <span class="service-icon">🛠️</span>
+      <div class="service-name">App Maintenance &amp; Upgrades</div>
+      <div class="service-desc">Bug fixes, performance optimization, Flutter version upgrades, new feature development, and ongoing technical support for existing mobile applications.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ACHIEVEMENTS ===== -->
+<section id="achievements" style="padding-top:0">
+  <div style="text-align:center;max-width:560px;margin:0 auto 48px" class="reveal">
+    <div class="section-label">Track Record</div>
+    <div class="section-title">By the Numbers</div>
+  </div>
+  <div class="achievements-grid">
+    <div class="achievement-card reveal" style="transition-delay:.1s">
+      <span class="ach-icon">📦</span>
+      <div class="ach-num">50+</div>
+      <div class="ach-label">Apps Shipped to Stores</div>
+    </div>
+    <div class="achievement-card reveal" style="transition-delay:.15s">
+      <span class="ach-icon">📥</span>
+      <div class="ach-num">100K+</div>
+      <div class="ach-label">Total App Downloads</div>
+    </div>
+    <div class="achievement-card reveal" style="transition-delay:.2s">
+      <span class="ach-icon">🐙</span>
+      <div class="ach-num">50+</div>
+      <div class="ach-label">GitHub Repositories</div>
+    </div>
+    <div class="achievement-card reveal" style="transition-delay:.25s">
+      <span class="ach-icon">🌍</span>
+      <div class="ach-num">5+</div>
+      <div class="ach-label">Countries Reached</div>
+    </div>
+    <div class="achievement-card reveal" style="transition-delay:.3s">
+      <span class="ach-icon">💼</span>
+      <div class="ach-num">4+</div>
+      <div class="ach-label">Years Professional Exp.</div>
+    </div>
+    <div class="achievement-card reveal" style="transition-delay:.35s">
+      <span class="ach-icon">🤝</span>
+      <div class="ach-num">5+</div>
+      <div class="ach-label">International Clients</div>
+    </div>
+    <div class="achievement-card reveal" style="transition-delay:.4s">
+      <span class="ach-icon">🎓</span>
+      <div class="ach-num">BSc</div>
+      <div class="ach-label">Computer Science, GCUF</div>
+    </div>
+    <div class="achievement-card reveal" style="transition-delay:.45s">
+      <span class="ach-icon">⭐</span>
+      <div class="ach-num">4.8★</div>
+      <div class="ach-label">Avg. App Store Rating</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section id="contact" class="contact-section">
+  <div class="contact-grid">
+    <div class="reveal-left">
+      <div class="section-label">Get In Touch</div>
+      <div class="section-title">Let's Build Something<br/>Amazing Together</div>
+      <p class="contact-info" style="color:var(--text-secondary);line-height:1.8;margin-bottom:32px;max-width:400px">Available for freelance projects, full-time opportunities, and consulting. I respond within 24 hours.</p>
+      <div class="contact-items">
+        <a href="mailto:zeeshanakhtar.ffc@gmail.com" class="contact-item">
+          <div class="contact-icon">📧</div>
+          <span>zeeshanakhtar.ffc@gmail.com</span>
+        </a>
+        <a href="tel:+923170602606" class="contact-item">
+          <div class="contact-icon">📞</div>
+          <span>+92 317 0602606</span>
+        </a>
+        <div class="contact-item">
+          <div class="contact-icon">📍</div>
+          <span>Layyah, Punjab, Pakistan</span>
+        </div>
+      </div>
+      <div class="socials">
+        <a href="https://linkedin.com/in/zeeshan-akhtar-a6a478261" target="_blank" class="social-btn">
+          <span class="social-icon">💼</span>LinkedIn
+        </a>
+        <a href="https://github.com/zeeshanakhtar012" target="_blank" class="social-btn">
+          <span class="social-icon">🐙</span>GitHub
+        </a>
+        <a href="https://wa.me/923170602606" target="_blank" class="social-btn">
+          <span class="social-icon">💬</span>WhatsApp
+        </a>
+      </div>
+    </div>
+    <div class="reveal-right">
+      <div class="contact-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Your Name</label>
+            <input class="form-control" type="text" id="fname" placeholder="John Doe"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input class="form-control" type="email" id="femail" placeholder="john@example.com"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Subject</label>
+          <input class="form-control" type="text" id="fsubject" placeholder="Flutter App Development"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Message</label>
+          <textarea class="form-control" id="fmessage" rows="5" placeholder="Tell me about your project..."></textarea>
+        </div>
+        <button class="form-submit" onclick="sendEmail()">Send Message →</button>
+        <div class="form-success" id="form-success">
+          ✅ Message sent! I'll get back to you within 24 hours.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="reveal">
+  <div class="footer-brand">Zeeshan Akhtar</div>
+  <div class="footer-copy">© 2025 Zeeshan Akhtar. Flutter &amp; Node.js Developer · Layyah, Pakistan</div>
+</footer>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+/* Loader */
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loader').classList.add('hidden');
+  }, 2000);
+});
+
+/* Scroll progress */
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = (scrollTop / docHeight) * 100;
+  document.getElementById('scroll-progress').style.width = pct + '%';
+
+  /* Navbar */
+  const nav = document.getElementById('navbar');
+  if(scrollTop > 60) nav.classList.add('scrolled');
+  else nav.classList.remove('scrolled');
+});
+
+/* Custom cursor */
+const dot = document.getElementById('cursor-dot');
+const ring = document.getElementById('cursor-ring');
+let mouseX=0, mouseY=0, ringX=0, ringY=0;
+document.addEventListener('mousemove', e => {
+  mouseX = e.clientX; mouseY = e.clientY;
+  dot.style.left = mouseX+'px'; dot.style.top = mouseY+'px';
+});
+(function animCursor(){
+  ringX += (mouseX - ringX) * 0.12;
+  ringY += (mouseY - ringY) * 0.12;
+  ring.style.left = ringX+'px'; ring.style.top = ringY+'px';
+  requestAnimationFrame(animCursor);
+})();
+document.querySelectorAll('a,button,.skill-card,.project-card').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    ring.style.width='50px'; ring.style.height='50px';
+    ring.style.borderColor='rgba(124,110,255,.8)';
+  });
+  el.addEventListener('mouseleave', () => {
+    ring.style.width='36px'; ring.style.height='36px';
+    ring.style.borderColor='rgba(124,110,255,.5)';
+  });
+});
+
+/* Reveal on scroll */
+const revealEls = document.querySelectorAll('.reveal,.reveal-left,.reveal-right');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if(entry.isIntersecting){
+      const delay = entry.target.style.transitionDelay || '0s';
+      entry.target.style.transitionDelay = delay;
+      entry.target.classList.add('visible');
+    }
+  });
+}, {threshold:0.12});
+revealEls.forEach(el => observer.observe(el));
+
+/* Typed text effect */
+const phrases = ['Flutter Specialist','Node.js Developer','UI/UX Enthusiast','Full-Stack Creator'];
+let pi = 0, ci = 0, del = false;
+const typedEl = document.getElementById('typed-text');
+function typeLoop(){
+  const phrase = phrases[pi];
+  if(!del){
+    typedEl.textContent = phrase.slice(0, ci+1);
+    ci++;
+    if(ci === phrase.length){ del=true; setTimeout(typeLoop, 1800); return; }
+  } else {
+    typedEl.textContent = phrase.slice(0, ci-1);
+    ci--;
+    if(ci === 0){ del=false; pi=(pi+1)%phrases.length; }
+  }
+  setTimeout(typeLoop, del ? 60 : 90);
+}
+setTimeout(typeLoop, 1200);
+
+/* Count-up stats */
+function countUp(el, end, suffix='', prefix=''){
+  let n = 0;
+  const dur = 1800;
+  const step = dur / end;
+  const timer = setInterval(() => {
+    n++;
+    el.textContent = prefix + n + suffix;
+    if(n >= end) clearInterval(timer);
+  }, step);
+}
+const statsObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      const els = entry.target.querySelectorAll('[data-count]');
+      els.forEach(el => {
+        const count = parseInt(el.dataset.count);
+        const suffix = el.dataset.suffix || (el.dataset.count > 1 ? '+' : '+');
+        const prefix = el.dataset.prefix !== undefined ? el.dataset.prefix : '';
+        countUp(el, count, suffix, prefix);
+      });
+      statsObserver.disconnect();
+    }
+  });
+}, {threshold:0.5});
+const heroStats = document.querySelector('.hero-stats');
+if(heroStats) statsObserver.observe(heroStats);
+
+/* Mobile menu */
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobile-menu');
+hamburger.addEventListener('click', () => {
+  mobileMenu.classList.toggle('open');
+});
+function closeMobile(){
+  mobileMenu.classList.remove('open');
+}
+
+/* Contact form */
+function sendEmail(){
+  const name = document.getElementById('fname').value;
+  const email = document.getElementById('femail').value;
+  const subject = document.getElementById('fsubject').value;
+  const message = document.getElementById('fmessage').value;
+  if(!name||!email||!message){ alert('Please fill in all required fields.'); return; }
+  const mailto = `mailto:zeeshanakhtar.ffc@gmail.com?subject=${encodeURIComponent(subject||'Portfolio Contact')}&body=${encodeURIComponent('Name: '+name+'\nEmail: '+email+'\n\n'+message)}`;
+  window.location.href = mailto;
+  document.getElementById('form-success').style.display = 'block';
+}
+</script>
+</body>
+</html>
